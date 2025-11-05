@@ -139,11 +139,12 @@ You’ll receive a JSON response with detected object details.
 ## 🧱 Architecture
 
 ```mermaid
-graph TD;
-    A[Node-RED Flow] -->|Image Upload (HTTP POST)| B[FastAPI Server];
-    B -->|Runs YOLO ONNX Model| C[ONNX Runtime];
-    C -->|JSON Output| A;
-    A --> D[Dashboard Visualization];
+graph TD
+    A[Node-RED Flow] -->|"Image Upload via HTTP POST"| B[FastAPI Server]
+    B -->|"Runs YOLO ONNX Model"| C[ONNX Runtime]
+    C -->|"Returns JSON Output"| A
+    A -->|"Visualized in Dashboard"| D[Node-RED Dashboard]
+
 ```
 
 ### Component Breakdown
