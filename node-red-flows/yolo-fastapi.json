@@ -1,0 +1,138 @@
+[
+    {
+        "id": "tab1",
+        "type": "tab",
+        "label": "YOLO FastAPI Prediction",
+        "disabled": false
+    },
+    {
+        "id": "inject1",
+        "type": "inject",
+        "z": "tab1",
+        "name": "Run Prediction",
+        "props": [
+            {
+                "p": "filename",
+                "v": "C:\\\\Users\\\\User\\\\.node-red\\\\scripts\\\\Cat.jpg",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "filein1"
+            ]
+        ]
+    },
+    {
+        "id": "filein1",
+        "type": "file in",
+        "z": "tab1",
+        "name": "Read Image File",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 380,
+        "y": 140,
+        "wires": [
+            [
+                "function1",
+                "08594fb1ac7d4692"
+            ]
+        ]
+    },
+    {
+        "id": "function1",
+        "type": "function",
+        "z": "tab1",
+        "name": "Prepare multipart/form-data",
+        "func": "msg.headers = { 'Content-Type': 'multipart/form-data' };\n// msg.method = 'POST';\n// msg.url = 'http://127.0.0.1:8000/predict';\nmsg.payload = {\n    file: {\n        value: msg.payload,\n        options: {\n            filename: 'Cat.jpg',\n            contentType: 'image/jpeg'\n        }\n    }\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 140,
+        "wires": [
+            [
+                "http1"
+            ]
+        ]
+    },
+    {
+        "id": "http1",
+        "type": "http request",
+        "z": "tab1",
+        "name": "POST to FastAPI",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:8000/predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 300,
+        "wires": [
+            [
+                "debug1"
+            ]
+        ]
+    },
+    {
+        "id": "debug1",
+        "type": "debug",
+        "z": "tab1",
+        "name": "Show Prediction JSON",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "08594fb1ac7d4692",
+        "type": "image viewer",
+        "z": "tab1",
+        "name": "",
+        "width": 160,
+        "data": "payload",
+        "dataType": "msg",
+        "active": true,
+        "x": 310,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ebcc960a74aa7cc1",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-image-tools": "2.1.1"
+        }
+    }
+]
